@@ -1,0 +1,56 @@
+name: Deployment on Dev
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build & Deploy
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          HOSTNAME: ${{ secrets.SERVER_HOST }}
+          USER_NAME: ${{ secrets.SERVER_USER }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key
+          chmod 600 private_key
+
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} << 'EOF'
+            set -e
+
+            cd /home/ubuntu/fe-odin-cms
+
+
+            echo "📦 Pulling latest changes from dev..."
+            git reset --hard
+            git clean -fd
+            git pull origin dev
+
+            echo "🧩 Loading Node environment..."
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+
+            echo "📦 Installing dependencies..."
+            export CI=true
+            pnpm install --frozen-lockfile
+
+            echo "🏗️ Building project..."
+            rm -rf .next/
+            pnpm run build
+
+            echo "🚀 Restarting service with PM2..."
+            if pm2 describe fe-odin-cms > /dev/null 2>&1; then
+              pm2 restart fe-odin-cms
+            else
+              pm2 start pnpm --name fe-odin-cms -- start
+            fi
+
+            pm2 save
+          EOF
+
+          rm -f private_key

@@ -1,0 +1,584 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-1: 0 100% 63%;
+    --color-2: 270 100% 63%;
+    --color-3: 210 100% 63%;
+    --color-4: 195 100% 63%;
+    --color-5: 90 100% 63%;
+
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+
+    /* Success/Warning colors */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 0%;
+
+    /* Highlight - orange for special emphasis */
+    --highlight: 32 95% 50%;
+    --highlight-foreground: 0 0% 100%;
+  }
+
+  /* Premium Dark Mode - Awwward-worthy */
+  .dark {
+    /* Rich, deep background with subtle blue undertone */
+    --background: 230 25% 7%;
+    --foreground: 210 40% 98%;
+
+    /* Elevated card surfaces with glass-like depth */
+    --card: 230 25% 9%;
+    --card-foreground: 210 40% 98%;
+
+    /* Popover with slight elevation */
+    --popover: 230 25% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Vibrant primary - electric blue with glow potential */
+    --primary: 217 91% 60%;
+    --primary-foreground: 230 25% 7%;
+
+    /* Secondary surfaces */
+    --secondary: 230 20% 14%;
+    --secondary-foreground: 210 40% 98%;
+
+    /* Muted elements */
+    --muted: 230 20% 14%;
+    --muted-foreground: 215 20% 65%;
+
+    /* Accent - subtle blue-tinted for hover states */
+    --accent: 217 91% 60%;
+    --accent-foreground: 210 40% 98%;
+
+    /* Highlight - warm orange for special emphasis */
+    --highlight: 32 95% 55%;
+    --highlight-foreground: 230 25% 7%;
+
+    /* Destructive - softer red that doesn't scream */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Subtle borders */
+    --border: 230 20% 18%;
+    --input: 230 20% 14%;
+    --ring: 217 91% 60%;
+
+    /* Success/Warning for dark mode */
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 0%;
+
+    /* Custom glow colors */
+    --glow-primary: 217 91% 60%;
+    --glow-accent: 32 95% 55%;
+    --glow-success: 142 71% 45%;
+    --glow-destructive: 0 72% 51%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  *:hover {
+    scrollbar-color: hsl(214 20% 80%) transparent;
+  }
+
+  .dark *:hover {
+    scrollbar-color: hsl(230 20% 25%) transparent;
+  }
+
+  /* Webkit (Chrome, Edge, Safari) */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 9999px;
+    transition: background 0.3s ease;
+  }
+
+  *:hover::-webkit-scrollbar-thumb {
+    background: hsl(214 20% 80%);
+  }
+
+  *:hover::-webkit-scrollbar-thumb:hover {
+    background: hsl(214 20% 65%);
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ============================================
+   PREMIUM DARK MODE ENHANCEMENTS
+   ============================================ */
+
+@layer components {
+  /* Glass morphism effect for dark mode */
+  .dark .glass {
+    background: linear-gradient(
+      135deg,
+      hsl(230 25% 12% / 0.8) 0%,
+      hsl(230 25% 9% / 0.9) 100%
+    );
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid hsl(230 20% 22% / 0.5);
+  }
+
+  /* Subtle gradient backgrounds */
+  .dark .bg-gradient-dark {
+    background: linear-gradient(
+      180deg,
+      hsl(230 25% 7%) 0%,
+      hsl(230 25% 5%) 100%
+    );
+  }
+
+  /* Glow effects */
+  .dark .glow-sm {
+    box-shadow: 0 0 15px -3px hsl(var(--primary) / 0.3);
+  }
+
+  .dark .glow-md {
+    box-shadow: 0 0 25px -5px hsl(var(--primary) / 0.4);
+  }
+
+  .dark .glow-lg {
+    box-shadow: 0 0 40px -10px hsl(var(--primary) / 0.5);
+  }
+
+  .dark .glow-accent {
+    box-shadow: 0 0 20px -5px hsl(var(--accent) / 0.4);
+  }
+
+  /* Premium card styling */
+  .dark .card-elevated {
+    background: linear-gradient(
+      145deg,
+      hsl(230 25% 11%) 0%,
+      hsl(230 25% 8%) 100%
+    );
+    border: 1px solid hsl(230 20% 20% / 0.6);
+    box-shadow:
+      0 4px 6px -1px hsl(0 0% 0% / 0.3),
+      0 2px 4px -2px hsl(0 0% 0% / 0.2),
+      inset 0 1px 0 0 hsl(230 20% 25% / 0.1);
+  }
+
+  /* Hover lift effect */
+  .dark .hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .dark .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 10px 25px -5px hsl(0 0% 0% / 0.4),
+      0 0 20px -5px hsl(var(--primary) / 0.15);
+  }
+
+  /* Premium input styling */
+  .dark .input-premium {
+    background: hsl(230 25% 8%);
+    border: 1px solid hsl(230 20% 18%);
+    transition: all 0.2s ease;
+  }
+
+  .dark .input-premium:focus {
+    border-color: hsl(var(--primary));
+    box-shadow:
+      0 0 0 3px hsl(var(--primary) / 0.1),
+      0 0 20px -5px hsl(var(--primary) / 0.3);
+  }
+
+  /* Premium button glow */
+  .dark .btn-glow {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dark .btn-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--accent)) 50%,
+      hsl(var(--primary)) 100%
+    );
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    filter: blur(8px);
+  }
+
+  .dark .btn-glow:hover::before {
+    opacity: 0.6;
+  }
+
+  /* Toast premium styling */
+  .dark .toast-premium {
+    background: linear-gradient(
+      135deg,
+      hsl(230 25% 13%) 0%,
+      hsl(230 25% 10%) 100%
+    );
+    border: 1px solid hsl(230 20% 22%);
+    box-shadow:
+      0 10px 40px -10px hsl(0 0% 0% / 0.5),
+      0 0 20px -5px hsl(var(--primary) / 0.1);
+  }
+
+  .dark .toast-success {
+    border-left: 3px solid hsl(var(--success));
+    box-shadow:
+      0 10px 40px -10px hsl(0 0% 0% / 0.5),
+      0 0 20px -5px hsl(var(--success) / 0.2);
+  }
+
+  .dark .toast-error {
+    border-left: 3px solid hsl(var(--destructive));
+    box-shadow:
+      0 10px 40px -10px hsl(0 0% 0% / 0.5),
+      0 0 20px -5px hsl(var(--destructive) / 0.2);
+  }
+
+  /* Dialog/Modal premium overlay */
+  .dark .dialog-overlay-premium {
+    background: linear-gradient(
+      180deg,
+      hsl(230 25% 5% / 0.85) 0%,
+      hsl(230 25% 3% / 0.95) 100%
+    );
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  /* Sidebar gradient */
+  .dark .sidebar-gradient {
+    background: linear-gradient(
+      180deg,
+      hsl(230 25% 9%) 0%,
+      hsl(230 25% 6%) 100%
+    );
+  }
+
+  /* Navigation item active glow */
+  .dark .nav-item-active {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(217 91% 50%) 100%
+    );
+    box-shadow: 0 4px 15px -3px hsl(var(--primary) / 0.4);
+  }
+
+  /* Subtle border glow on hover */
+  .dark .border-glow-hover {
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .dark .border-glow-hover:hover {
+    border-color: hsl(var(--primary) / 0.5);
+    box-shadow: 0 0 15px -5px hsl(var(--primary) / 0.3);
+  }
+
+  /* Status badges */
+  .dark .badge-success {
+    background: hsl(var(--success) / 0.15);
+    color: hsl(142 71% 55%);
+    border: 1px solid hsl(var(--success) / 0.3);
+  }
+
+  .dark .badge-warning {
+    background: hsl(var(--warning) / 0.15);
+    color: hsl(38 92% 60%);
+    border: 1px solid hsl(var(--warning) / 0.3);
+  }
+
+  .dark .badge-error {
+    background: hsl(var(--destructive) / 0.15);
+    color: hsl(0 72% 60%);
+    border: 1px solid hsl(var(--destructive) / 0.3);
+  }
+
+  .dark .badge-info {
+    background: hsl(var(--primary) / 0.15);
+    color: hsl(217 91% 70%);
+    border: 1px solid hsl(var(--primary) / 0.3);
+  }
+
+  /* Skeleton loading with shimmer */
+  .dark .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(230 25% 12%) 0%,
+      hsl(230 25% 18%) 50%,
+      hsl(230 25% 12%) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Scrollbar styling for dark mode */
+  .dark ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .dark ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 9999px;
+  }
+
+  .dark *:hover::-webkit-scrollbar-thumb {
+    background: hsl(230 20% 25%);
+  }
+
+  .dark *:hover::-webkit-scrollbar-thumb:hover {
+    background: hsl(230 20% 35%);
+  }
+
+  /* Selection styling */
+  .dark ::selection {
+    background: hsl(var(--primary) / 0.3);
+    color: hsl(210 40% 98%);
+  }
+
+  /* Focus ring enhancement */
+  .dark .focus-ring-glow:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px hsl(var(--background)),
+      0 0 0 4px hsl(var(--primary)),
+      0 0 20px -5px hsl(var(--primary) / 0.5);
+  }
+
+  /* Divider with gradient */
+  .dark .divider-gradient {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsl(230 20% 25%) 50%,
+      transparent 100%
+    );
+  }
+
+  /* Table row hover */
+  .dark .table-row-hover:hover {
+    background: hsl(230 25% 11%);
+  }
+
+  /* Dropdown menu premium */
+  .dark .dropdown-premium {
+    background: hsl(230 25% 11%);
+    border: 1px solid hsl(230 20% 20%);
+    box-shadow:
+      0 10px 40px -10px hsl(0 0% 0% / 0.6),
+      0 0 1px 0 hsl(230 20% 30%);
+  }
+}
+
+/* BlockNote Editor Styles */
+.blocknote-editor {
+  min-height: 500px;
+}
+
+.blocknote-editor .bn-container {
+  background: transparent;
+}
+
+.blocknote-editor .bn-block-content {
+  font-family: inherit;
+  line-height: 1.65; /* Increased for better readability */
+}
+
+/* Add more vertical breathing room between blocks */
+.blocknote-editor .bn-block {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Universal link styling for any element that might be a link in BlockNote */
+.blocknote-editor [data-link-url],
+.blocknote-editor [data-link],
+.blocknote-editor [data-url],
+.blocknote-editor [href],
+.blocknote-editor a,
+.blocknote-editor .bn-link,
+[data-link-url],
+[data-link],
+.bn-inline-content a,
+.bn-inline-content .bn-link,
+.bn-inline-content [data-link-url],
+.bn-inline-content [data-link] {
+  color: #2563eb !important;
+  text-decoration: underline !important;
+  text-decoration-color: #2563eb !important;
+  cursor: pointer !important;
+}
+
+/* Ensure nested spans don't override the link color */
+.blocknote-editor [data-link-url] *,
+.blocknote-editor [data-link] *,
+.blocknote-editor a *,
+.bn-inline-content a * {
+  color: inherit !important;
+  text-decoration: inherit !important;
+}
+
+.blocknote-editor a:hover,
+.bn-container a:hover,
+.bn-editor a:hover {
+  color: #1d4ed8 !important;
+  text-decoration-color: #1d4ed8 !important;
+  opacity: 0.9;
+  background-color: rgba(37, 99, 235, 0.08) !important;
+  border-radius: 2px;
+}
+
+/* Heading sizes matching design system */
+.blocknote-editor [data-content-type="heading"][data-level="1"] {
+  font-size: 28px !important;
+  line-height: 1.3;
+}
+
+.blocknote-editor [data-content-type="heading"][data-level="2"] {
+  font-size: 24px !important;
+  line-height: 1.3;
+}
+
+.blocknote-editor [data-content-type="heading"][data-level="3"] {
+  font-size: 16px !important;
+  line-height: 1.4;
+}
+
+/* Hide the redundant ai-generate button from buttonStyles (keep only the custom ✨ button) */
+.jodit-toolbar-button[aria-label*="ai-generate"]:not([aria-label*="✨"]) {
+  display: none !important;
+}
+
+.jodit-toolbar-button__button[title="ai-generate"] {
+  display: none !important;
+}
+
+/* Style the custom AI button (from extraButtons) */
+.jodit-toolbar-button[title="Generate with AI"] button,
+.jodit-toolbar-button[aria-label="Generate with AI"] button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-radius: 6px !important;
+  padding: 6px 12px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+  transition: all 0.3s ease !important;
+  border: none !important;
+  font-size: 16px !important;
+}
+
+.jodit-toolbar-button[title="Generate with AI"] button:hover,
+.jodit-toolbar-button[aria-label="Generate with AI"] button:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* BlockNote floating formatting toolbar — inactive buttons should be neutral, not blue */
+[class*="mantine-ActionIcon-root"] {
+  background-color: transparent !important;
+  color: hsl(0 0% 40%) !important;
+}
+
+[class*="mantine-ActionIcon-root"]:hover {
+  background-color: hsl(0 0% 90%) !important;
+  color: hsl(0 0% 20%) !important;
+}
+
+/* Active state only: blue highlight */
+[class*="mantine-ActionIcon-root"][aria-pressed="true"] {
+  background-color: hsl(217 91% 60% / 0.15) !important;
+  color: hsl(217 91% 60%) !important;
+}
+
+/* Dark mode overrides */
+.dark [class*="mantine-ActionIcon-root"] {
+  color: hsl(0 0% 75%) !important;
+  background-color: transparent !important;
+}
+
+.dark [class*="mantine-ActionIcon-root"]:hover {
+  background-color: hsl(0 0% 20%) !important;
+  color: hsl(0 0% 95%) !important;
+}
+
+.dark [class*="mantine-ActionIcon-root"][aria-pressed="true"] {
+  background-color: hsl(217 91% 60% / 0.2) !important;
+  color: hsl(217 91% 60%) !important;
+}
+
+/* Match BlockNote with premium dark design system */
+.dark .blocknote-editor {
+  --bn-colors-editor-background: hsl(230 25% 7%);
+  --bn-colors-editor-text: hsl(210 40% 98%);
+  --bn-colors-menu-background: hsl(230 25% 11%);
+  --bn-colors-menu-text: hsl(210 40% 98%);
+  --bn-colors-tooltip-background: hsl(230 25% 14%);
+  --bn-colors-tooltip-text: hsl(210 40% 98%);
+  --bn-colors-hovered-background: hsl(230 20% 16%);
+  --bn-colors-selected-background: hsl(217 91% 60% / 0.15);
+  --bn-colors-disabled-background: hsl(230 20% 12%);
+  --bn-colors-disabled-text: hsl(215 20% 45%);
+  --bn-colors-shadow: rgba(0, 0, 0, 0.4);
+  --bn-colors-border: hsl(230 20% 20%);
+  --bn-colors-side-menu: hsl(210 40% 98%);
+  --bn-colors-highlights-gray-background: hsl(230 20% 20% / 0.5);
+  --bn-colors-highlights-gray-text: hsl(210 20% 70%);
+}
+

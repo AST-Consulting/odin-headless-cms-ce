@@ -1,0 +1,43 @@
+import { Document } from 'mongoose';
+import { POST_STATUS } from 'src/core/constants/enums.constants';
+import { IUserSub } from 'src/user/entities/user-sub.interface';
+
+export interface IArticlePost extends Document {
+  user: IUserSub;
+  title: string;
+  url: string;
+  category: string;
+  tags: string[];
+  categoryId: number;
+  tagIds: number[];
+  metaTitle: string;
+  metaDescription: string;
+  ogTitle: string;
+  ogDescription: string;
+  status: (typeof POST_STATUS)[keyof typeof POST_STATUS];
+  imagePrompt: string;
+  imageCaption: string;
+  articlePostId?: number;
+  author?: string;
+  authorId?: string;
+  content?: string;
+  featured_media?: number;
+  year?: number;
+  imageUrl?: string;
+  excerpt?: string;
+  humanizeBlogContent?: string;
+  siteSlug: string;
+  articleType: string;
+  language?: string;
+  publish_type?: string;
+  publishDate?: Date;
+  generatedAt?: Date;
+  propertyId: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  seoScore?: number;
+  ruleId?: string;
+  ruleName?: string;
+  keyword?: string;
+  blogImpressions?: number;
+}

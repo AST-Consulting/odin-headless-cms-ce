@@ -1,0 +1,70 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+backend/dist/
+frontend/.next/
+frontend/out/
+/build
+
+# Environment variables — NEVER commit these
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+backend/.env
+frontend/.env
+frontend/.env.local
+
+# IDE & Editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Testing
+coverage/
+playwright-report/
+test-results/
+
+# Generated test files
+test-*.jpg
+test-*.sh
+test-*.json
+
+# Data directories
+data/
+.data/
+public/
+
+# Misc
+*.pem
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+.claude/
+
+# Local secrets and credentials
+*credentials.json
+*-credentials.json
+test-credentials.json
+

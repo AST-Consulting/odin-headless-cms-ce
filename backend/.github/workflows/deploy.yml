@@ -1,0 +1,42 @@
+name: deployment on dev
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build & Deploy
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          HOSTNAME: ${{ secrets.SERVER_HOST }}
+          USER_NAME: ${{ secrets.SERVER_USER }}
+
+        run: |
+            echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+            ssh -t -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} << 'EOF'
+              set -e
+
+              cd /home/ubuntu/odin_cms
+              git remote set-url origin git@github.com:AST-Consulting/odin_cms.git
+
+              git stash || true
+              git stash clear || true
+
+              git pull origin dev
+
+              export NVM_DIR=~/.nvm
+              source ~/.nvm/nvm.sh
+              echo "📦 Installing dependencies..."
+              export CI=true
+              pnpm install --frozen-lockfile
+
+              echo "🏗️ Building project..."
+              NODE_OPTIONS="--max-old-space-size=4096" pnpm run build
+
+              pm2 restart be-odin-cms || pm2 start ecosystem.config.js

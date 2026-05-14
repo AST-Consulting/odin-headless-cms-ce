@@ -1,0 +1,35 @@
+{
+  "tag": [
+    { "model": "blog", "field": "tags" },
+    { "model": "faq", "field": "tags" },
+    { "model": "staticpage", "field": "tags" },
+    { "model": "page", "field": "tags" },
+    { "model": "article", "field": "tags" }
+  ],
+  "category": [
+    { "model": "blog", "field": "categories" },
+    { "model": "blog", "field": "primaryCategory" },
+    { "model": "faq", "field": "categories" },
+    { "model": "staticpage", "field": "categories" },
+    { "model": "page", "field": "categories" },
+    { "model": "article", "field": "categories" }
+  ],
+  "slug": [
+    { "model": "blog", "field": "slug" },
+    { "model": "faq", "field": "slug" },
+    { "model": "staticPage", "field": "slug" },
+    { "model": "menu", "field": "slug" },
+    { "model": "tag", "field": "slug" },
+    { "model": "category", "field": "slug" },
+    { "model": "banner", "field": "slug" },
+    { "model": "article", "field": "slug" },
+    { "model": "author", "field": "slug" },
+    { "model": "bannerType", "field": "slug" }
+  ],
+  "menu": [
+    { "model": "page", "field": "menu" }
+  ],
+  "blog": [
+    { "model": "blog", "field": "relatedBlogs" }
+  ]
+}

@@ -1,0 +1,423 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Odin CMS — Headless",
+    "description": "Content-Type Builder (blueprints) + dynamic Entries (per-content-type collections). Routing: plural for lists, singular for single-doc operations. Listing endpoints include examples of every filter supported by APIFeatures.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000" },
+    { "key": "token", "value": "" },
+    { "key": "pluralName", "value": "products" },
+    { "key": "singularName", "value": "product" },
+    { "key": "contentTypeId", "value": "" },
+    { "key": "componentId", "value": "" },
+    { "key": "entryId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. Content Builder — Content Types",
+      "item": [
+        {
+          "name": "Create ContentType (Product)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/content-builder/content-types",
+              "host": ["{{baseUrl}}"],
+              "path": ["content-builder", "content-types"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayName\": \"Product\",\n  \"singularName\": \"product\",\n  \"pluralName\": \"products\",\n  \"collectionName\": \"products\",\n  \"description\": \"E-commerce product catalog\",\n  \"fields\": [\n    {\n      \"name\": \"title\",\n      \"label\": \"Title\",\n      \"type\": \"string\",\n      \"required\": true,\n      \"indexed\": true,\n      \"searchable\": true,\n      \"validation\": { \"minLength\": 3, \"maxLength\": 160 },\n      \"order\": 1\n    },\n    {\n      \"name\": \"sku\",\n      \"label\": \"SKU\",\n      \"type\": \"string\",\n      \"required\": true,\n      \"unique\": true,\n      \"validation\": { \"regex\": \"^[A-Z0-9-]{3,20}$\" },\n      \"order\": 2\n    },\n    {\n      \"name\": \"price\",\n      \"label\": \"Price\",\n      \"type\": \"decimal\",\n      \"required\": true,\n      \"validation\": { \"min\": 0 },\n      \"order\": 3\n    },\n    {\n      \"name\": \"inStock\",\n      \"label\": \"In Stock\",\n      \"type\": \"boolean\",\n      \"default\": true,\n      \"order\": 4\n    },\n    {\n      \"name\": \"cover\",\n      \"label\": \"Cover Image\",\n      \"type\": \"media\",\n      \"mediaMultiple\": false,\n      \"mediaAllowedTypes\": [\"image\"],\n      \"order\": 5\n    },\n    {\n      \"name\": \"category\",\n      \"label\": \"Category\",\n      \"type\": \"relation\",\n      \"relationTarget\": \"api::category.category\",\n      \"relationType\": \"manyToOne\",\n      \"indexed\": true,\n      \"order\": 6\n    },\n    {\n      \"name\": \"description\",\n      \"label\": \"Description\",\n      \"type\": \"richblock\",\n      \"order\": 7\n    }\n  ],\n  \"indexes\": [\n    {\n      \"name\": \"idx_status_publishedAt\",\n      \"type\": \"compound\",\n      \"fields\": [\n        { \"path\": \"status\", \"order\": 1 },\n        { \"path\": \"publishedAt\", \"order\": -1 }\n      ]\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "List ContentTypes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/content-builder/content-types",
+              "host": ["{{baseUrl}}"],
+              "path": ["content-builder", "content-types"]
+            }
+          }
+        },
+        {
+          "name": "Get ContentType by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/content-builder/content-types/{{contentTypeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content-builder", "content-types", "{{contentTypeId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update ContentType (add field)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/content-builder/content-types/{{contentTypeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content-builder", "content-types", "{{contentTypeId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fields\": [\n    { \"name\": \"title\", \"type\": \"string\", \"required\": true, \"indexed\": true, \"searchable\": true },\n    { \"name\": \"sku\", \"type\": \"string\", \"required\": true, \"unique\": true },\n    { \"name\": \"price\", \"type\": \"decimal\", \"required\": true },\n    { \"name\": \"inStock\", \"type\": \"boolean\", \"default\": true },\n    { \"name\": \"cover\", \"type\": \"media\" },\n    { \"name\": \"category\", \"type\": \"relation\", \"relationTarget\": \"api::category.category\", \"relationType\": \"manyToOne\" },\n    { \"name\": \"description\", \"type\": \"richblock\" },\n    { \"name\": \"tags\", \"type\": \"relation\", \"relationTarget\": \"api::tag.tag\", \"relationType\": \"manyToMany\" }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Publish ContentType",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/content-builder/content-types/{{contentTypeId}}/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["content-builder", "content-types", "{{contentTypeId}}", "publish"]
+            }
+          }
+        },
+        {
+          "name": "Delete ContentType",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/content-builder/content-types/{{contentTypeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content-builder", "content-types", "{{contentTypeId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Content Builder — Components",
+      "item": [
+        {
+          "name": "Create Component (SEO)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/content-builder/components",
+              "host": ["{{baseUrl}}"],
+              "path": ["content-builder", "components"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayName\": \"SEO\",\n  \"description\": \"Metadata for search engines\",\n  \"fields\": [\n    { \"name\": \"metaTitle\", \"type\": \"string\", \"validation\": { \"maxLength\": 70 } },\n    { \"name\": \"metaDescription\", \"type\": \"text\", \"validation\": { \"maxLength\": 160 } },\n    { \"name\": \"keywords\", \"type\": \"string\" },\n    { \"name\": \"ogImage\", \"type\": \"media\" }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "List Components",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/content-builder/components",
+              "host": ["{{baseUrl}}"],
+              "path": ["content-builder", "components"]
+            }
+          }
+        },
+        {
+          "name": "Get Component by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/content-builder/components/{{componentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content-builder", "components", "{{componentId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Component",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/content-builder/components/{{componentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content-builder", "components", "{{componentId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"SEO metadata — updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Component",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/content-builder/components/{{componentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["content-builder", "components", "{{componentId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Entries (products)",
+      "description": "Routing: plural for listing, singular for single-doc ops (create / find one / update / delete).",
+      "item": [
+        {
+          "name": "List — Basic",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{pluralName}}?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{pluralName}}"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List — Filter by user field",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{pluralName}}?title=Running Shoes&status=published",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{pluralName}}"],
+              "query": [
+                { "key": "title", "value": "Running Shoes", "description": "Translated to `data.title`" },
+                { "key": "status", "value": "published", "description": "System field — passes through" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List — Wildcard",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{pluralName}}?title=run*",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{pluralName}}"],
+              "query": [
+                { "key": "title", "value": "run*", "description": "Prefix-match — converted to anchored regex" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List — CSV ($in)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{pluralName}}?status=draft,published,scheduled",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{pluralName}}"],
+              "query": [
+                { "key": "status", "value": "draft,published,scheduled", "description": "Comma-separated → $in" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List — Range (numeric)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{pluralName}}?price.gte=1000&price.lte=5000",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{pluralName}}"],
+              "query": [
+                { "key": "price.gte", "value": "1000", "description": "→ data.price $gte" },
+                { "key": "price.lte", "value": "5000", "description": "→ data.price $lte" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List — Range (date)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{pluralName}}?createdAt.gte=2026-01-01&createdAt.lte=2026-04-30",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{pluralName}}"],
+              "query": [
+                { "key": "createdAt.gte", "value": "2026-01-01" },
+                { "key": "createdAt.lte", "value": "2026-04-30" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List — Search term",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{pluralName}}?searchTerm=shoe",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{pluralName}}"],
+              "query": [
+                { "key": "searchTerm", "value": "shoe", "description": "Regex across all filter fields" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List — Sort",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{pluralName}}?sort=createdAt&sortOrder=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{pluralName}}"],
+              "query": [
+                { "key": "sort", "value": "createdAt" },
+                { "key": "sortOrder", "value": "desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List — Field projection",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{pluralName}}?fields=data.title,data.sku,data.price,status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{pluralName}}"],
+              "query": [
+                { "key": "fields", "value": "data.title,data.sku,data.price,status", "description": "Mongo projection" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List — Cursor pagination (lastId)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{pluralName}}?lastId={{entryId}}&limit=20&sortOrder=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{pluralName}}"],
+              "query": [
+                { "key": "lastId", "value": "{{entryId}}" },
+                { "key": "limit", "value": "20" },
+                { "key": "sortOrder", "value": "desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List — Combined filters",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{pluralName}}?status=published&price.gte=1000&title=run*&sort=createdAt&sortOrder=desc&page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{pluralName}}"],
+              "query": [
+                { "key": "status", "value": "published" },
+                { "key": "price.gte", "value": "1000" },
+                { "key": "title", "value": "run*" },
+                { "key": "sort", "value": "createdAt" },
+                { "key": "sortOrder", "value": "desc" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create (singular)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/{{singularName}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{singularName}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"propertyId\": \"6620a1b2c3d4e5f678902001\",\n  \"organizationId\": \"6620a1b2c3d4e5f678903001\",\n  \"locale\": \"en\",\n  \"status\": \"draft\",\n  \"data\": {\n    \"title\": \"Trail Running Shoes\",\n    \"sku\": \"RUN-TRL-001\",\n    \"price\": 2499,\n    \"inStock\": true,\n    \"description\": [\n      { \"id\": \"b1\", \"type\": \"heading\", \"content\": \"Overview\", \"order\": 0 },\n      { \"id\": \"b2\", \"type\": \"paragraph\", \"content\": \"Built for rugged trails.\", \"order\": 1 }\n    ]\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Find One (singular + :id)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{singularName}}/{{entryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{singularName}}", "{{entryId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update (singular + :id)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/{{singularName}}/{{entryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{singularName}}", "{{entryId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"price\": 2299,\n    \"inStock\": false\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete (singular + :id)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{singularName}}/{{entryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{singularName}}", "{{entryId}}"]
+            }
+          }
+        },
+        {
+          "name": "Publish",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{singularName}}/{{entryId}}/actions/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{singularName}}", "{{entryId}}", "actions", "publish"]
+            }
+          }
+        },
+        {
+          "name": "Unpublish",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/{{singularName}}/{{entryId}}/actions/unpublish",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "{{singularName}}", "{{entryId}}", "actions", "unpublish"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
