@@ -122,6 +122,14 @@ src/
 
 ---
 
+## Security & Dependencies
+
+- **Vulnerable Packages**: DO NOT introduce known vulnerable packages. Specifically, NEVER use `xlsx` (SheetJS free version) as it has unpatchable Prototype Pollution and ReDoS vulnerabilities.
+- **Secure Alternatives**: Use `exceljs` instead of `xlsx` for Excel parsing and generation. Always prefer actively maintained libraries with clean security audits.
+- **Transitive Vulnerabilities**: Be mindful of dependencies that bring in bloated or insecure sub-dependencies.
+
+---
+
 ## Instructions
 1. **Analyze Specification**: Read the approved `Technical_Specification.md` thoroughly.
 2. **Scaffold**: Create the module/component directory structure first.

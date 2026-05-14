@@ -101,6 +101,11 @@ REST endpoint table:
 - Require proper error handling (NestJS exception filters, frontend error boundaries).
 - Security patterns (guards, sanitization, rate limiting).
 
+##### B.6 Security & Dependencies
+- Identify any new libraries needed and evaluate their security posture.
+- **NEVER use `xlsx`** (SheetJS free version) due to unpatchable vulnerabilities. **Always specify `exceljs`** for Excel handling.
+- Reject any dependency that brings in excessive or known vulnerable sub-dependencies.
+
 ---
 
 ### 3. Request Approval

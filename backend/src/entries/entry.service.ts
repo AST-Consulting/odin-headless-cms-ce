@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import * as XLSX from 'xlsx';
+import * as ExcelJS from 'exceljs';
 import {
   ContentType,
   TContentTypeDocument,
@@ -121,19 +121,48 @@ export class EntryService {
     const contentType = await this._resolveBySingular(singularName);
     const model = this._modelFor(contentType);
 
-    let workbook: XLSX.WorkBook;
+    const workbook = new ExcelJS.Workbook();
     try {
-      workbook = XLSX.read(buffer, { type: 'buffer', cellDates: true });
+      await workbook.xlsx.load(buffer);
     } catch {
       throw new BadRequestException('Could not parse the uploaded file as a valid Excel workbook');
     }
 
-    if (!workbook.SheetNames.length) {
+    const sheet = workbook.worksheets[0];
+    if (!sheet) {
       throw new BadRequestException('Excel file contains no sheets');
     }
 
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    const rows: Record<string, any>[] = XLSX.utils.sheet_to_json(sheet, { defval: null });
+    const rows: Record<string, any>[] = [];
+    let headers: string[] = [];
+    
+    sheet.eachRow((row, rowNumber) => {
+      if (rowNumber === 1) {
+        row.eachCell({ includeEmpty: false }, (cell, colNumber) => {
+          headers[colNumber] = cell.value ? String(cell.value) : '';
+        });
+        return;
+      }
+      
+      const rowData: Record<string, any> = {};
+      for (let i = 1; i < headers.length; i++) {
+        if (headers[i]) rowData[headers[i]] = null;
+      }
+
+      row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+        const header = headers[colNumber];
+        if (header) {
+          let val = cell.value;
+          if (val && typeof val === 'object') {
+            if ('richText' in val) val = (val as any).richText.map((rt: any) => rt.text).join('');
+            else if ('result' in val) val = (val as any).result;
+            else if ('text' in val) val = (val as any).text;
+          }
+          rowData[header] = val ?? null;
+        }
+      });
+      rows.push(rowData);
+    });
 
     if (!rows.length) {
       return { total: 0, imported: 0, failed: 0, errors: [] };
