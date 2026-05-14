@@ -8,7 +8,14 @@
       "qs": ">=6.14.1",
       "tmp": ">=0.2.4",
       "diff": ">=8.0.3",
-      "undici": "^6.23.0"
+      "undici": "^6.23.0",
+      "fast-uri": ">=3.1.2",
+      "fast-xml-builder": ">=1.1.7",
+      "protobufjs": ">=7.5.6",
+      "ip-address": ">=10.1.1",
+      "@protobufjs/utf8": ">=1.1.1",
+      "uuid": ">=11.1.1",
+      "fast-xml-parser": ">=5.7.0"
     }
   },
   "scripts": {
@@ -62,7 +69,7 @@
     "@types/multer": "^2.1.0",
     "@types/sharp": "^0.32.0",
     "@types/winston": "^2.4.4",
-    "axios": "^1.15.1",
+    "axios": "^1.16.1",
     "bcrypt": "^6.0.0",
     "bull": "^4.16.5",
     "bullmq": "^5.75.2",
@@ -75,7 +82,7 @@
     "country-timezone": "^1.0.8",
     "date-fns": "^4.1.0",
     "dotenv": "^17.4.2",
-    "fast-xml-parser": "^5.7.1",
+    "fast-xml-parser": "^5.8.0",
     "geoip-lite": "^1.2.2",
     "google-auth-library": "^10.6.2",
     "googleapis": "^164.1.0",
@@ -106,7 +113,7 @@
     "twilio": "^5.13.1",
     "twitter-api-v2": "^1.29.0",
     "ua-parser-js": "^1.0.41",
-    "uuid": "^9.0.1",
+    "uuid": "^14.0.0",
     "winston": "^3.19.0",
     "winston-daily-rotate-file": "^5.0.0",
     "xlsx": "^0.18.5",
